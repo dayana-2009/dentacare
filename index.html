@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DentaCare</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="#" class="logo">Denta<span>Care</span></a>
+            <nav class="nav">
+                <ul class="nav__list" id="navList">
+                    <li><a href="#hero" class="nav__link" data-i18n="nav_home">Главная</a></li>
+                    <li><a href="#services" class="nav__link" data-i18n="nav_services">Услуги</a></li>
+                    <li><a href="#doctors" class="nav__link" data-i18n="nav_doctors">Врачи</a></li>
+                    <li><a href="#reviews" class="nav__link" data-i18n="nav_reviews">Отзывы</a></li>
+                    <li><a href="#appointment" class="nav__link" data-i18n="nav_appointment">Запись</a></li>
+                </ul>
+            </nav>
+            <!-- Переключатель языка -->
+            <button class="lang-btn" id="langToggle">EN</button>
+            <button class="theme-btn" id="themeToggle" aria-label="Переключить тему">🌙</button>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Главный экран -->
+        <section id="hero" class="hero reveal">
+            <div class="container hero__content">
+                <div class="hero__text">
+                    <h1 data-i18n="hero_title">Здоровые зубы —<br>уверенная улыбка</h1>
+                    <p data-i18n="hero_desc">Современная стоматология без боли и стресса. Индивидуальный подход к каждому пациенту.</p>
+                    <button class="btn btn--primary" id="openModalBtn" data-i18n="btn_book">Записаться на приём</button>
+                </div>
+                <div class="hero__image">
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&auto=format&fit=crop&q=60" alt="Стоматология">
+                </div>
+            </div>
+        </section>
+
+        <!-- Услуги -->
+        <section id="services" class="services section">
+            <div class="container">
+                <h2 class="section__title reveal" data-i18n="services_title">Наши услуги</h2>
+                
+                <!-- Фильтр через поиск -->
+                <div class="search-box reveal">
+                    <input type="text" id="searchInput" placeholder="Поиск услуги..." data-i18n-placeholder="search_placeholder">
+                </div>
+
+                <div class="services__grid" id="servicesGrid">
+                    <div class="service-card reveal">
+                        <h3 data-i18n="srv1_title">Лечение кариеса</h3>
+                        <p data-i18n="srv1_desc">Безболезненное лечение с использованием современных материалов.</p>
+                        <span class="price">от 3 000 ₽</span>
+                        <button class="btn btn--secondary view-details" data-title="Лечение кариеса" data-desc="Современные пломбировочные материалы, анестезия последнего поколения. Гарантия на работу 2 года.">Подробнее</button>
+                    </div>
+                    <div class="service-card reveal">
+                        <h3 data-i18n="srv2_title">Профессиональная чистка</h3>
+                        <p data-i18n="srv2_desc">Удаление налёта и камня, полировка эмали.</p>
+                        <span class="price">от 2 500 ₽</span>
+                        <button class="btn btn--secondary view-details" data-title="Профессиональная чистка" data-desc="Ультразвуковая чистка, Air Flow, полировка и фторирование. Занимает около 1 часа.">Подробнее</button>
+                    </div>
+                    <div class="service-card reveal">
+                        <h3 data-i18n="srv3_title">Имплантация</h3>
+                        <p data-i18n="srv3_desc">Восстановление зубов с помощью имплантов премиум-класса.</p>
+                        <span class="price">от 30 000 ₽</span>
+                        <button class="btn btn--secondary view-details" data-title="Имплантация" data-desc="Установка имплантов Osstem, Straumann. Пожизненная гарантия на имплант.">Подробнее</button>
+                    </div>
+                    <div class="service-card reveal">
+                        <h3 data-i18n="srv4_title">Отбеливание</h3>
+                        <p data-i18n="srv4_desc">Безопасное отбеливание до 8 тонов за один визит.</p>
+                        <span class="price">от 8 000 ₽</span>
+                        <button class="btn btn--secondary view-details" data-title="Отбеливание" data-desc="Система ZOOM 4. Безопасно для эмали, результат сохраняется до 2 лет при соблюдении рекомендаций.">Подробнее</button>
+                    </div>
+                </div>
+
+                <div class="calculator reveal">
+                    <h3 data-i18n="calc_title">Калькулятор стоимости услуг</h3>
+                    <div class="calculator__options">
+                        <label><input type="checkbox" class="calc-checkbox" value="3000" data-id="c1"> Лечение кариеса — 3 000 ₽</label>
+                        <label><input type="checkbox" class="calc-checkbox" value="2500" data-id="c2"> Чистка — 2 500 ₽</label>
+                        <label><input type="checkbox" class="calc-checkbox" value="30000" data-id="c3"> Имплантация — 30 000 ₽</label>
+                        <label><input type="checkbox" class="calc-checkbox" value="8000" data-id="c4"> Отбеливание — 8 000 ₽</label>
+                    </div>
+                    <p class="calculator__total">Итого: <strong id="calcTotal">0</strong> ₽</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Врачи -->
+        <section id="doctors" class="doctors section">
+            <div class="container">
+                <h2 class="section__title reveal" data-i18n="doctors_title">Наши врачи</h2>
+                <div class="doctors__grid">
+                    <div class="doctor-card reveal">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=60" alt="Врач">
+                        <h3>Анна Петрова</h3>
+                        <p>Стоматолог-терапевт</p>
+                    </div>
+                    <div class="doctor-card reveal">
+                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=60" alt="Врач">
+                        <h3>Иван Смирнов</h3>
+                        <p>Хирург-имплантолог</p>
+                    </div>
+                    <div class="doctor-card reveal">
+                        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=300&auto=format&fit=crop&q=60" alt="Врач">
+                        <h3>Елена Козлова</h3>
+                        <p>Ортодонт</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Отзывы (Слайдер) -->
+        <section id="reviews" class="reviews section">
+            <div class="container">
+                <h2 class="section__title reveal" data-i18n="reviews_title">Отзывы пациентов</h2>
+                <div class="slider-container reveal">
+                    <button class="slider-btn prev" id="sliderPrev">&#10094;</button>
+                    <div class="slider-track" id="sliderTrack">
+                        <div class="review-card">
+                            <p>«Очень довольна! Лечение прошло без боли, врач всё объяснил.»</p>
+                            <span>— Мария, 34 года</span>
+                        </div>
+                        <div class="review-card">
+                            <p>«Имплантация прошла успешно, результат превзошёл ожидания.»</p>
+                            <span>— Алексей, 45 лет</span>
+                        </div>
+                        <div class="review-card">
+                            <p>«Чистка зубов — быстро и качественно. Приду ещё!»</p>
+                            <span>— Ольга, 28 лет</span>
+                        </div>
+                        <div class="review-card">
+                            <p>«Отличная клиника, вежливый персонал и современное оборудование.»</p>
+                            <span>— Дмитрий, 40 лет</span>
+                        </div>
+                    </div>
+                    <button class="slider-btn next" id="sliderNext">&#10095;</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Запись (Netlify Forms) -->
+        <section id="appointment" class="appointment section">
+            <div class="container">
+                <h2 class="section__title reveal" data-i18n="form_title">Запись на приём</h2>
+                <form class="form reveal" id="appointmentForm" name="appointment" method="POST" data-netlify="true">
+                    <!-- Обязательный скрытый инпут для Netlify Forms -->
+                    <input type="hidden" name="form-name" value="appointment">
+                    
+                    <div class="form__group">
+                        <label for="name" data-i18n="form_name">Ваше имя</label>
+                        <input type="text" id="name" name="name" placeholder="Иван Иванов">
+                        <span class="error" id="nameError"></span>
+                    </div>
+                    <div class="form__group">
+                        <label for="phone" data-i18n="form_phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+7 (999) 123-45-67">
+                        <span class="error" id="phoneError"></span>
+                    </div>
+                    <div class="form__group">
+                        <label for="service" data-i18n="form_service">Услуга</label>
+                        <select id="service" name="service">
+                            <option value="" data-i18n="form_select">Выберите услугу</option>
+                            <option value="Лечение кариеса">Лечение кариеса</option>
+                            <option value="Чистка">Профессиональная чистка</option>
+                            <option value="Имплантация">Имплантация</option>
+                            <option value="Отбеливание">Отбеливание</option>
+                        </select>
+                        <span class="error" id="serviceError"></span>
+                    </div>
+                    <button type="submit" class="btn btn--primary" data-i18n="form_btn">Отправить заявку</button>
+                    <p class="form__success" id="formSuccess"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__contacts">
+                <h4 data-i18n="footer_contacts">Контакты</h4>
+                <p>г. Москва, ул. Здоровья, 10</p>
+                <p>+7 (495) 123-45-67</p>
+                <p>info@dentacare.ru</p>
+            </div>
+            <div class="footer__info">
+                <p>&copy; 2026 DentaCare.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button id="backToTop" aria-label="Наверх">↑</button>
+
+    <!-- Модальное окно записи -->
+    <div class="modal" id="modal">
+        <div class="modal__content">
+            <button class="modal__close" id="closeModalBtn">&times;</button>
+            <h2 data-i18n="modal_book_title">Записаться на приём</h2>
+            <form class="form" id="modalForm">
+                <div class="form__group">
+                    <label for="modalName" data-i18n="form_name">Ваше имя</label>
+                    <input type="text" id="modalName" placeholder="Иван Иванов">
+                    <span class="error" id="modalNameError"></span>
+                </div>
+                <div class="form__group">
+                    <label for="modalPhone" data-i18n="form_phone">Телефон</label>
+                    <input type="tel" id="modalPhone" placeholder="+7 (999) 123-45-67">
+                    <span class="error" id="modalPhoneError"></span>
+                </div>
+                <button type="submit" class="btn btn--primary" data-i18n="form_btn">Отправить</button>
+                <p class="form__success" id="modalSuccess"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно деталей услуги -->
+    <div class="modal" id="detailsModal">
+        <div class="modal__content">
+            <button class="modal__close" id="closeDetailsBtn">&times;</button>
+            <h2 id="detailsTitle"></h2>
+            <p id="detailsDesc" style="margin-top: 15px; margin-bottom: 20px;"></p>
+            <button class="btn btn--primary" id="detailsBookBtn">Записаться на эту услугу</button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
