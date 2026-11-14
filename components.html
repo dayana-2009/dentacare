@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои компоненты</title>
+    <style>
+        :root {
+            --color-main: #0077b6;
+            --color-text: #222222;
+            --color-card: #ffffff;
+            --color-bg: #f8f9fa;
+            --color-border: #dddddd;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
+
+        /* Базовые стили и сброс */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        
+        /* Стили для фокуса (важно для Lighthouse Accessibility) */
+        :focus-visible {
+            outline: 3px solid var(--color-main);
+            outline-offset: 2px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        section { margin: 60px 0; }
+        h2 { margin-bottom: 20px; text-align: center; }
+
+        /* === 1. Шапка и Бургер === */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: var(--color-card);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--color-main); text-decoration: none; }
+        
+        .site-nav { display: flex; gap: 24px; }
+        .site-nav a { color: var(--color-text); text-decoration: none; font-weight: 500; }
+        
+        .menu-toggle { display: none; } 
+
+        @media (max-width: 700px) {
+            .menu-toggle {
+                display: block; background: none; border: none; cursor: pointer; padding: 8px; z-index: 10;
+            }
+            .menu-toggle__icon, .menu-toggle__icon::before, .menu-toggle__icon::after {
+                content: ""; display: block; width: 24px; height: 2px;
+                background: var(--color-text); margin: 5px 0;
+                transition: transform 0.3s, background 0.3s;
+            }
+            .site-nav {
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
+                background: var(--color-card); flex-direction: column;
+                padding: 80px 24px; box-shadow: var(--shadow);
+                transition: right 0.3s ease;
+            }
+            .site-nav.is-open { right: 0; }
+            
+            /* Крестик */
+            .menu-toggle[aria-expanded="true"] .menu-toggle__icon { background: transparent; }
+            .menu-toggle[aria-expanded="true"] .menu-toggle__icon::before { transform: translateY(7px) rotate(45deg); }
+            .menu-toggle[aria-expanded="true"] .menu-toggle__icon::after { transform: translateY(-7px) rotate(-45deg); }
+        }
+
+        /* === Карточка проекта === */
+        .project-card {
+            background: var(--color-card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .btn {
+            display: inline-block; padding: 12px 24px; border: none; border-radius: 8px;
+            background: var(--color-main); color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .btn:hover { background: #005f8a; transform: translateY(-2px); }
+
+        /* === 2. Модальное окно === */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+            display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 1000;
+        }
+        .modal-overlay[hidden] { display: none; }
+        
+        .modal {
+            position: relative; background: var(--color-card); border-radius: var(--radius);
+            padding: 32px; max-width: 440px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: modal-in 0.25s ease;
+        }
+        @keyframes modal-in {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: none; }
+        }
+        .modal__close {
+            position: absolute; top: 12px; right: 12px; background: none; border: none;
+            font-size: 20px; cursor: pointer; color: var(--color-text);
+        }
+        .modal__form { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+        .modal__form input { padding: 10px; border: 1px solid var(--color-border); border-radius: 6px; }
+
+        /* === 3. Слайдер (с автопрокруткой) === */
+        .slider { position: relative; max-width: 600px; margin: 0 auto; }
+        .slider__viewport { overflow: hidden; border-radius: var(--radius); }
+        .slider__track { display: flex; transition: transform 0.4s ease; }
+        .slider__slide {
+            flex: 0 0 100%; min-height: 200px; display: flex; align-items: center; justify-content: center;
+            background: var(--color-card); font-size: 1.2rem; box-shadow: var(--shadow);
+        }
+        .slider__btn {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            background: rgba(0,0,0,0.4); color: #fff; font-size: 24px; cursor: pointer;
+            transition: background 0.3s;
+        }
+        .slider__btn:hover { background: rgba(0,0,0,0.7); }
+        .slider__btn--prev { left: 10px; }
+        .slider__btn--next { right: 10px; }
+        .slider__dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+        .slider__dot {
+            width: 12px; height: 12px; border-radius: 50%; border: none;
+            background: var(--color-border); cursor: pointer; padding: 0;
+        }
+        .slider__dot.is-active { background: var(--color-main); }
+
+        /* === 4. Табы === */
+        .tabs { max-width: 600px; margin: 0 auto; background: var(--color-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+        .tabs__list { display: flex; border-bottom: 1px solid var(--color-border); }
+        .tabs__tab {
+            flex: 1; padding: 15px; border: none; background: none; cursor: pointer;
+            font-weight: 600; color: var(--color-text); transition: background 0.2s;
+        }
+        .tabs__tab:hover { background: rgba(0,0,0,0.05); }
+        .tabs__tab.is-active { color: var(--color-main); border-bottom: 3px solid var(--color-main); }
+        .tabs__panel { padding: 20px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. ШАПКА С БУРГЕРОМ -->
+    <header class="site-header">
+        <a href="#" class="logo">MyPortfolio</a>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню">
+            <span class="menu-toggle__icon"></span>
+        </button>
+        <nav class="site-nav" id="site-nav">
+            <a href="#about">Обо мне</a>
+            <a href="#projects">Проекты</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Карточка проекта (Задание 2) -->
+        <section id="projects">
+            <h2>Мои проекты</h2>
+            <div class="project-card">
+                <h3>Сайт стоматологии DentaCare</h3>
+                <p style="margin: 15px 0;">Адаптивный сайт с калькулятором и формами.</p>
+                <!-- Кнопка открывает модалку -->
+                <button class="btn" data-open-modal="#modal-contact">Написать мне</button>
+            </div>
+        </section>
+
+        <!-- 4. ТАБЫ -->
+        <section>
+            <h2>Описание проекта (Табы)</h2>
+            <div class="tabs">
+                <div class="tabs__list" role="tablist" aria-label="Информация о проекте">
+                    <button class="tabs__tab is-active" role="tab" aria-selected="true" aria-controls="tab-1" id="tab-btn-1" data-tab="#tab-1">Описание</button>
+                    <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-2" id="tab-btn-2" data-tab="#tab-2">Характеристики</button>
+                    <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-3" id="tab-btn-3" data-tab="#tab-3">Отзывы</button>
+                </div>
+                <div class="tabs__panel" id="tab-1" role="tabpanel" aria-labelledby="tab-btn-1">Текст описания проекта...</div>
+                <div class="tabs__panel" id="tab-2" role="tabpanel" aria-labelledby="tab-btn-2" hidden>Список характеристик...</div>
+                <div class="tabs__panel" id="tab-3" role="tabpanel" aria-labelledby="tab-btn-3" hidden>Отзывы клиентов...</div>
+            </div>
+        </section>
+
+        <!-- 3. СЛАЙДЕР -->
+        <section>
+            <h2>Мои работы (Слайдер)</h2>
+            <div class="slider">
+                <div class="slider__viewport">
+                    <div class="slider__track">
+                        <div class="slider__slide">Слайд 1: Сайт кофейни</div>
+                        <div class="slider__slide">Слайд 2: Блог о путешествиях</div>
+                        <div class="slider__slide">Слайд 3: Список книг</div>
+                    </div>
+                </div>
+                <button class="slider__btn slider__btn--prev" aria-label="Предыдущий слайд">&#10094;</button>
+                <button class="slider__btn slider__btn--next" aria-label="Следующий слайд">&#10095;</button>
+                <div class="slider__dots"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 2. МОДАЛЬНОЕ ОКНО -->
+    <div class="modal-overlay" id="modal-contact" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal__close" data-close-modal aria-label="Закрыть окно">✕</button>
+            <h2 id="modal-title">Написать мне</h2>
+            <form class="modal__form">
+                <label for="m-name">Имя</label>
+                <input type="text" id="m-name" required>
+                <label for="m-phone">Телефон</label>
+                <input type="tel" id="m-phone" required>
+                <button type="submit" class="btn" style="margin-top: 10px;">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // === 1. Бургер-меню ===
+        const menuToggle = document.querySelector('.menu-toggle');
+        const siteNav = document.querySelector('.site-nav');
+        
+        menuToggle.addEventListener('click', () => {
+            const isOpen = siteNav.classList.toggle('is-open');
+            menuToggle.setAttribute('aria-expanded', isOpen);
+            // Блокируем скролл при открытом меню
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        // === 2. Модальное окно ===
+        const openButtons = document.querySelectorAll('[data-open-modal]');
+        const closeButtons = document.querySelectorAll('[data-close-modal]');
+        let lastFocused = null;
+
+        function openModal(modal) {
+            lastFocused = document.activeElement;
+            modal.hidden = false;
+            modal.querySelector('input, button')?.focus();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modal) {
+            modal.hidden = true;
+            document.body.style.overflow = '';
+            lastFocused?.focus();
+        }
+
+        openButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modal = document.querySelector(btn.dataset.openModal);
+                if (modal) openModal(modal);
+            });
+        });
+
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => closeModal(btn.closest('.modal-overlay')));
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(overlay); });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay:not([hidden])').forEach(closeModal);
+            }
+        });
+
+        // === 3. Слайдер (Бесконечный + Автопрокрутка) ===
+        const slider = document.querySelector('.slider');
+        const track = slider.querySelector('.slider__track');
+        const slides = slider.querySelectorAll('.slider__slide');
+        const prevBtn = slider.querySelector('.slider__btn--prev');
+        const nextBtn = slider.querySelector('.slider__btn--next');
+        const dotsBox = slider.querySelector('.slider__dots');
+        let currentIndex = 0;
+        let autoPlayInterval;
+
+        // Создаем точки
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'slider__dot';
+            dot.setAttribute('aria-label', `Перейти к слайду ${i + 1}`);
+            dot.addEventListener('click', () => {
+                goTo(i);
+                resetAutoPlay(); // Сбрасываем таймер при ручном клике
+            });
+            dotsBox.appendChild(dot);
+        });
+        const dots = dotsBox.querySelectorAll('.slider__dot');
+
+        function goTo(index) {
+            // Логика бесконечности (Задание со звёздочкой)
+            if (index < 0) {
+                currentIndex = slides.length - 1; // С последнего на первый
+            } else if (index >= slides.length) {
+                currentIndex = 0; // С первого на последний
+            } else {
+                currentIndex = index;
+            }
+
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((d, i) => d.classList.toggle('is-active', i === currentIndex));
+        }
+
+        prevBtn.addEventListener('click', () => { goTo(currentIndex - 1); resetAutoPlay(); });
+        nextBtn.addEventListener('click', () => { goTo(currentIndex + 1); resetAutoPlay(); });
+
+        // Автопрокрутка каждые 5 секунд (Задание со звёздочкой)
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => goTo(currentIndex + 1), 5000);
+        }
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+        function resetAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        // Пауза при наведении
+        slider.addEventListener('mouseenter', stopAutoPlay);
+        slider.addEventListener('mouseleave', startAutoPlay);
+
+        // Инициализация
+        goTo(0);
+        startAutoPlay();
+
+        // === 4. Табы ===
+        const tabs = document.querySelectorAll('.tabs__tab');
+        const panels = document.querySelectorAll('.tabs__panel');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Снимаем активность со всех
+                tabs.forEach(t => {
+                    t.classList.remove('is-active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                panels.forEach(p => p.hidden = true);
+
+                // Активируем выбранный
+                tab.classList.add('is-active');
+                tab.setAttribute('aria-selected', 'true');
+                document.querySelector(tab.dataset.tab).hidden = false;
+            });
+        });
+    </script>
+</body>
+</html>
